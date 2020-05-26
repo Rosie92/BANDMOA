@@ -1,0 +1,1235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="poly.persistance.mapper.BMMapper">
+
+
+	<insert id="insertBMFreeBR" parameterType="BMFBDTO">
+		INSERT INTO FBTABLE (
+		BOARD_SEQ,
+		TITLE,
+		CONTENT,
+		UPD_DATE,
+		USER_ID,
+		BOARD_PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(FBTABLE.BOARD_SEQ),0)+1 FROM FBTABLE),
+		#{title},
+		#{content},
+		SYSDATE,
+		#{user_id},
+		#{board_pw}
+		)
+	</insert>
+
+	<insert id="insertBMSrBR" parameterType="BMSRDTO">
+		INSERT INTO SRTABLE (
+		BOARD_SEQ,
+		TITLE,
+		CONTENT,
+		UPD_DATE,
+		USER_ID,
+		BOARD_PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(SRTABLE.BOARD_SEQ),0)+1 FROM SRTABLE),
+		#{title},
+		#{content},
+		SYSDATE,
+		#{user_id},
+		#{board_pw}
+		)
+	</insert>
+
+	<insert id="insertBMqtBR" parameterType="BMQTDTO">
+		INSERT INTO QTTABLE (
+		BOARD_SEQ,
+		TITLE,
+		CONTENT,
+		UPD_DATE,
+		USER_ID,
+		BOARD_PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(QTTABLE.BOARD_SEQ),0)+1 FROM QTTABLE),
+		#{title},
+		#{content},
+		SYSDATE,
+		#{user_id},
+		#{board_pw}
+		)
+	</insert>
+
+	<insert id="insertBMmBR" parameterType="BMMDTO">
+		INSERT INTO MTABLE (
+		BOARD_SEQ,
+		TITLE,
+		CONTENT,
+		UPD_DATE,
+		USER_ID,
+		BOARD_PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(MTABLE.BOARD_SEQ),0)+1 FROM MTABLE),
+		#{title},
+		#{content},
+		SYSDATE,
+		#{user_id},
+		#{board_pw}
+		)
+	</insert>
+
+	<select id="getBMFreeB" resultType="BMFBDTO">
+<![CDATA[
+	SELECT
+		TITLE AS title,
+		UPD_DATE AS upd_date,
+		USER_ID AS user_id,
+		BOARD_SEQ AS board_seq
+	FROM
+		(SELECT
+			A.*, ROWNUM AS RNUM
+		FROM
+			(SELECT * FROM FBTABLE ORDER BY BOARD_SEQ DESC) A
+		WHERE
+			ROWNUM <= #{listsize}
+		)
+	WHERE
+		RNUM > #{startlist}
+]]>
+	</select>
+	<select id="getBMSrB" resultType="BMSRDTO">
+<![CDATA[
+SELECT
+	TITLE AS title,
+	UPD_DATE AS upd_date,
+	USER_ID AS user_id,
+	BOARD_SEQ AS board_seq
+FROM
+	(SELECT
+		A.*, ROWNUM AS RNUM
+	FROM
+		(SELECT * FROM SRTABLE ORDER BY BOARD_SEQ DESC) A
+	WHERE
+		ROWNUM <= #{listsize}
+	)
+WHERE
+	RNUM > #{startlist}
+]]>
+	</select>
+	<select id="getBMqtB" resultType="BMQTDTO">
+<![CDATA[
+SELECT
+	TITLE AS title,
+	UPD_DATE AS upd_date,
+	USER_ID AS user_id,
+	BOARD_SEQ AS board_seq
+FROM
+	(SELECT
+		A.*, ROWNUM AS RNUM
+	FROM
+		(SELECT * FROM QTTABLE ORDER BY BOARD_SEQ DESC) A
+	WHERE
+		ROWNUM <= #{listsize}
+	)
+WHERE
+	RNUM > #{startlist}
+]]>
+	</select>
+	<select id="getBMmB" resultType="BMMDTO">
+<![CDATA[
+SELECT
+	TITLE AS title,
+	UPD_DATE AS upd_date,
+	USER_ID AS user_id,
+	BOARD_SEQ AS board_seq
+FROM
+	(SELECT
+		A.*, ROWNUM AS RNUM
+	FROM
+		(SELECT * FROM MTABLE ORDER BY BOARD_SEQ DESC) A
+	WHERE
+		ROWNUM <= #{listsize}
+	)
+WHERE
+	RNUM > #{startlist}
+]]>
+	</select>
+
+
+	<select id="getBMUserInfo" resultType="BMUserInfoDTO">
+<![CDATA[
+	SELECT
+		USER_NO AS user_no,
+		USER_ID AS user_id,
+		USER_NAME AS user_name,
+		USER_MAIL AS user_mail,
+		USER_TEL AS user_tel
+	FROM
+		(SELECT
+			A.*, ROWNUM AS RNUM
+		FROM
+			(SELECT * FROM USERTABLE ORDER BY USER_NO DESC) A
+		WHERE
+			ROWNUM <= #{listsize}
+		)
+	WHERE
+		RNUM > #{startlist}
+]]>
+	</select>
+
+	<select id="getBMFreeBD" parameterType="BMFBDTO"
+		resultType="BMFBDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_Date,
+		USER_ID AS user_id,
+		BOARD_SEQ AS Seq,
+		BOARD_PW AS board_pw
+		FROM
+		FBTABLE
+		WHERE
+		BOARD_SEQ = #{Seq}
+	</select>
+
+	<select id="getBMSrBD" parameterType="BMSRDTO"
+		resultType="BMSRDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_Date,
+		USER_ID AS user_id,
+		BOARD_SEQ AS Seq,
+		BOARD_PW AS board_pw
+		FROM
+		SRTABLE
+		WHERE
+		BOARD_SEQ = #{Seq}
+	</select>
+
+	<select id="getBMqtBD" parameterType="BMQTDTO"
+		resultType="BMQTDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_Date,
+		USER_ID AS user_id,
+		BOARD_SEQ AS Seq,
+		BOARD_PW AS board_pw
+		FROM
+		QTTABLE
+		WHERE
+		BOARD_SEQ = #{Seq}
+	</select>
+
+	<select id="getBMmBD" parameterType="BMMDTO" resultType="BMMDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_Date,
+		USER_ID AS
+		user_id,
+		BOARD_SEQ AS Seq,
+		BOARD_PW AS board_pw
+		FROM
+		MTABLE
+		WHERE
+		BOARD_SEQ
+		= #{Seq}
+	</select>
+
+	<!-- 회원가입하기 ( 회원정보 등록하기 ) -->
+	<insert id="insertLogin_Join" parameterType="BMUserInfoDTO">
+		INSERT INTO
+		USERTABLE
+		(
+		USER_NO,
+		USER_ID,
+		USER_PW,
+		USER_NAME,
+		USER_TEL,
+		USER_MAIL
+		)
+		VALUES(
+		USER_NO.NEXTVAL,
+		#{user_id},
+		#{user_pw},
+		#{user_name},
+		#{user_tel},
+		#{user_mail}
+		)
+	</insert>
+
+	<select id="getUserLoginCheck" parameterType="BMUserInfoDTO"
+		resultType="BMUserInfoDTO">
+		SELECT
+		USER_ID AS user_id,
+		USER_PW AS user_pw,
+		USER_NAME AS
+		user_name,
+		USER_MAIL AS user_mail,
+		USER_TEL AS user_tel
+		FROM USERTABLE
+		WHERE
+		USER_ID = #{user_id}
+		AND USER_PW = #{user_pw}
+	</select>
+	<select id="GUI" parameterType="BMUserInfoDTO"
+		resultType="BMUserInfoDTO">
+		SELECT
+		USER_ID AS user_id,
+		USER_PW AS user_pw,
+		USER_NAME AS
+		user_name,
+		USER_MAIL AS user_mail,
+		USER_TEL AS user_tel,
+		USER_NO AS
+		user_no
+		FROM USERTABLE
+		WHERE
+		USER_ID = #{user_id}
+	</select>
+
+	<update id="MypageModify" parameterType="BMUserInfoDTO">
+		UPDATE USERTABLE
+		SET
+		USER_NAME = #{user_name},
+		USER_MAIL = #{user_mail},
+		USER_TEL =
+		#{user_tel}
+		WHERE
+		USER_NO = #{user_no}
+	</update>
+	<update id="MypageModify2" parameterType="BMUserInfoDTO">
+		UPDATE USERTABLE
+		SET
+		USER_PW = #{user_pw}
+		WHERE
+		USER_NO = #{user_no}
+	</update>
+	<select id="SelectIdFind" parameterType="BMUserInfoDTO"
+		resultType="BMUserInfoDTO">
+		SELECT
+		USER_ID AS user_id
+		FROM USERTABLE
+		WHERE
+		USER_NAME =
+		#{user_name}
+		AND USER_MAIL = #{user_mail}
+		AND USER_TEL = #{user_tel}
+	</select>
+
+	<select id="IdFind" parameterType="BMUserInfoDTO"
+		resultType="String">
+		SELECT
+		USER_ID AS user_id
+		FROM USERTABLE
+		WHERE
+		USER_NAME =
+		#{user_name}
+		AND USER_MAIL = #{user_mail}
+		AND USER_TEL = #{user_tel}
+	</select>
+
+	<select id="UserMypageCertify" parameterType="BMUserInfoDTO"
+		resultType="BMUserInfoDTO">
+		SELECT
+		USER_ID AS user_id
+		FROM USERTABLE
+		WHERE
+		USER_ID =
+		#{user_id}
+		AND USER_MAIL = #{user_mail}
+		AND USER_TEL = #{user_tel}
+	</select>
+
+	<select id="ModifyCertify" parameterType="BMFBDTO"
+		resultType="BMFBDTO">
+		SELECT
+		BOARD_SEQ AS board_seq
+		FROM FBTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+	<select id="ModifyCertifySR" parameterType="BMSRDTO"
+		resultType="BMSRDTO">
+		SELECT
+		BOARD_SEQ AS board_seq
+		FROM SRTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+	<select id="ModifyCertifyQT" parameterType="BMQTDTO"
+		resultType="BMQTDTO">
+		SELECT
+		BOARD_SEQ AS board_seq
+		FROM QTTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+	<select id="ModifyCertifyM" parameterType="BMMDTO"
+		resultType="BMMDTO">
+		SELECT
+		BOARD_SEQ AS board_seq
+		FROM MTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+
+
+
+	<select id="ModifyCertify2" parameterType="BMFBDTO"
+		resultType="BMFBDTO">
+		SELECT
+		BOARD_PW AS board_pw
+		FROM FBTABLE
+		WHERE
+		BOARD_PW =
+		#{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="ModifyCertify2SR" parameterType="BMSRDTO"
+		resultType="BMSRDTO">
+		SELECT
+		BOARD_PW AS board_pw
+		FROM SRTABLE
+		WHERE
+		BOARD_PW =
+		#{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="ModifyCertify2QT" parameterType="BMQTDTO"
+		resultType="BMQTDTO">
+		SELECT
+		BOARD_PW AS board_pw
+		FROM QTTABLE
+		WHERE
+		BOARD_PW =
+		#{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="ModifyCertify2M" parameterType="BMMDTO"
+		resultType="BMMDTO">
+		SELECT
+		BOARD_PW AS board_pw
+		FROM MTABLE
+		WHERE
+		BOARD_PW =
+		#{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+
+
+
+	<select id="GUI2" parameterType="BMFBDTO" resultType="BMFBDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM FBTABLE
+		WHERE
+		BOARD_PW = #{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="GUI2SR" parameterType="BMSRDTO" resultType="BMSRDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM SRTABLE
+		WHERE
+		BOARD_PW = #{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="GUI2QT" parameterType="BMQTDTO" resultType="BMQTDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM QTTABLE
+		WHERE
+		BOARD_PW = #{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="GUI2M" parameterType="BMMDTO" resultType="BMMDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM MTABLE
+		WHERE
+		BOARD_PW = #{board_pw}
+		AND BOARD_SEQ = #{board_seq}
+	</select>
+
+
+	<select id="GUI3" parameterType="BMFBDTO" resultType="BMFBDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM FBTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="GUI3SR" parameterType="BMSRDTO" resultType="BMSRDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM SRTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="GUI3QT" parameterType="BMQTDTO" resultType="BMQTDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM QTTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</select>
+	<select id="GUI3M" parameterType="BMMDTO" resultType="BMMDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		USER_ID AS
+		user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS board_seq
+		FROM MTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</select>
+
+
+
+
+	<select id="GUI4" parameterType="BMFBDTO" resultType="BMFBDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		BOARD_PW AS
+		board_pw,
+		BOARD_SEQ AS board_seq
+		FROM FBTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+	<select id="GUI4SR" parameterType="BMSRDTO" resultType="BMSRDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		BOARD_PW AS
+		board_pw,
+		BOARD_SEQ AS board_seq
+		FROM SRTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+	<select id="GUI4QT" parameterType="BMQTDTO" resultType="BMQTDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		BOARD_PW AS
+		board_pw,
+		BOARD_SEQ AS board_seq
+		FROM QTTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+	<select id="GUI4M" parameterType="BMMDTO" resultType="BMMDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS upd_date,
+		BOARD_PW AS
+		board_pw,
+		BOARD_SEQ AS board_seq
+		FROM MTABLE
+		WHERE
+		BOARD_SEQ =
+		#{board_seq}
+	</select>
+
+
+
+	<select id="BMFreeBDModify" parameterType="BMFBDTO"
+		resultType="BMFBDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_date,
+		USER_ID AS user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS seq
+		FROM
+		FBTABLE
+		WHERE
+		BOARD_SEQ = #{seq}
+	</select>
+	<select id="BMSrBDModify" parameterType="BMSRDTO"
+		resultType="BMSRDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_date,
+		USER_ID AS user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS seq
+		FROM
+		SRTABLE
+		WHERE
+		BOARD_SEQ = #{seq}
+	</select>
+	<select id="BMqtBDModify" parameterType="BMQTDTO"
+		resultType="BMQTDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_date,
+		USER_ID AS user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS seq
+		FROM
+		QTTABLE
+		WHERE
+		BOARD_SEQ = #{seq}
+	</select>
+	<select id="BMmBDModify" parameterType="BMMDTO"
+		resultType="BMMDTO">
+		SELECT
+		TITLE AS title,
+		CONTENT AS content,
+		UPD_DATE AS
+		upd_date,
+		USER_ID AS user_id,
+		BOARD_PW AS board_pw,
+		BOARD_SEQ AS seq
+		FROM
+		MTABLE
+		WHERE
+		BOARD_SEQ = #{seq}
+	</select>
+
+
+
+	<update id="updateFB" parameterType="BMFBDTO">
+		UPDATE FBTABLE SET
+		TITLE =
+		#{title},
+		CONTENT = #{content},
+		BOARD_PW = #{board_pw},
+		UPD_DATE =
+		SYSDATE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</update>
+	<update id="updateSR" parameterType="BMSRDTO">
+		UPDATE SRTABLE SET
+		TITLE =
+		#{title},
+		CONTENT = #{content},
+		BOARD_PW = #{board_pw},
+		UPD_DATE =
+		SYSDATE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</update>
+	<update id="updateQT" parameterType="BMQTDTO">
+		UPDATE QTTABLE SET
+		TITLE =
+		#{title},
+		CONTENT = #{content},
+		BOARD_PW = #{board_pw},
+		UPD_DATE =
+		SYSDATE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</update>
+	<update id="updateM" parameterType="BMMDTO">
+		UPDATE MTABLE SET
+		TITLE =
+		#{title},
+		CONTENT = #{content},
+		BOARD_PW = #{board_pw},
+		UPD_DATE =
+		SYSDATE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</update>
+
+
+
+
+	<delete id="deleteFB" parameterType="BMFBDTO">
+		DELETE
+		FROM
+		FBTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</delete>
+	<delete id="deleteSR" parameterType="BMSRDTO">
+		DELETE
+		FROM
+		SRTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</delete>
+	<delete id="deleteQT" parameterType="BMQTDTO">
+		DELETE
+		FROM
+		QTTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</delete>
+	<delete id="deleteM" parameterType="BMMDTO">
+		DELETE
+		FROM
+		MTABLE
+		WHERE
+		BOARD_SEQ = #{board_seq}
+	</delete>
+
+
+
+
+
+	<select id="TotalCountFB" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		FBTABLE
+	</select>
+	<select id="TotalCountSR" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		SRTABLE
+	</select>
+	<select id="TotalCountQT" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		QTTABLE
+	</select>
+	<select id="TotalCountM" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		MTABLE
+	</select>
+	<select id="TotalCountUserInfo" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		USERTABLE
+	</select>
+
+
+
+
+	<select id="checkId" parameterType="BMUserInfoDTO"
+		resultType="String">
+		SELECT COUNT(*)
+		FROM
+		USERTABLE
+		WHERE
+		USER_ID = #{user_id}
+	</select>
+
+
+
+	<delete id="UserDelete" parameterType="String">
+		DELETE
+		FROM
+		USERTABLE
+		WHERE
+		USER_ID = #{user_id}
+		And USER_PW = #{user_pw}
+	</delete>
+
+
+
+
+
+	<select id="ModifyCertify3" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		USERTABLE
+		WHERE
+		USER_PW = #{user_pw}
+		AND USER_ID = #{user_id}
+	</select>
+	<select id="ModifyCertify3SR" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		USERTABLE
+		WHERE
+		USER_PW = #{user_pw}
+		AND USER_ID = #{user_id}
+	</select>
+	<select id="ModifyCertify3QT" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		USERTABLE
+		WHERE
+		USER_PW = #{user_pw}
+		AND USER_ID = #{user_id}
+	</select>
+	<select id="ModifyCertify3M" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		USERTABLE
+		WHERE
+		USER_PW = #{user_pw}
+		AND USER_ID = #{user_id}
+	</select>
+
+	<select id="AdminUserInfoModify" parameterType="String" resultType="BMUserInfoDTO">
+		SELECT
+		USER_NAME AS user_name,
+		USER_MAIL AS user_mail,
+		USER_TEL AS user_tel,
+		USER_NO AS user_no
+		FROM
+		USERTABLE
+		WHERE
+		USER_NO = #{user_no}
+	</select>
+
+	<update id="AdminUserInfoModify2" parameterType="BMUserInfoDTO">
+		UPDATE USERTABLE
+		SET
+		USER_NAME = #{user_name},
+		USER_MAIL = #{user_mail},
+		USER_TEL = #{user_tel}
+		WHERE
+		USER_NO = #{user_no}
+	</update>
+	
+	<select id="AdminUserDelete" resultType="String">
+		SELECT
+		USER_PW AS user_pw
+		FROM
+		USERTABLE
+		WHERE
+		USER_PW = #{user_pw}
+	</select>
+	
+	<delete id="AdminUserDelete2" parameterType="BMUserInfoDTO">
+		DELETE
+		FROM
+		USERTABLE
+		WHERE
+		USER_NO = #{user_no}
+	</delete>
+	
+	<!-- <select id="getCommentFB" resultType="COMMENTDTO">
+	SELECT
+		COMMENT_SEQ AS comment_seq,
+		COMMENT_CONTENT AS comment_content,
+		COMMENT_ID AS comment_id,
+	FROM COMMENTTABLE
+	WHERE
+		 COMMENT_B = #{seq}
+	</select> -->
+
+	 <select id="readReply" resultType="COMMENTDTO">
+  		SELECT
+  		BOARD_SEQ AS board_seq,
+  		RNO AS rno,
+  		CONTENT AS content,
+  		WRITER AS writer,
+  		PW AS pw
+  		FROM
+  			(SELECT * FROM MYREPLY ORDER BY RNO ASC)
+  		WHERE 
+  		BOARD_SEQ = #{seq}
+ 	 </select>
+ 	 <select id="readReplySR" resultType="COMMENTDTO">
+  		SELECT
+  		BOARD_SEQ AS board_seq,
+  		RNO AS rno,
+  		CONTENT AS content,
+  		WRITER AS writer,
+  		PW AS pw
+  		FROM
+  			(SELECT * FROM SRMYREPLY ORDER BY RNO ASC)
+  		WHERE 
+  		BOARD_SEQ = #{seq}
+ 	 </select>
+ 	 <select id="readReplyQT" resultType="COMMENTDTO">
+  		SELECT
+  		BOARD_SEQ AS board_seq,
+  		RNO AS rno,
+  		CONTENT AS content,
+  		WRITER AS writer,
+  		PW AS pw
+  		FROM
+  			(SELECT * FROM QTMYREPLY ORDER BY RNO ASC)
+  		WHERE 
+  		BOARD_SEQ = #{seq}
+ 	 </select>
+ 	 <select id="readReplyM" resultType="COMMENTDTO">
+  		SELECT
+  		BOARD_SEQ AS board_seq,
+  		RNO AS rno,
+  		CONTENT AS content,
+  		WRITER AS writer,
+  		PW AS pw
+  		FROM
+  			(SELECT * FROM MMYREPLY ORDER BY RNO ASC)
+  		WHERE 
+  		BOARD_SEQ = #{seq}
+ 	 </select>
+ 	 
+ 	 
+ 	 
+ 	 
+ 	 
+ 	 
+ 	 
+ 	 
+ 	 <insert id="insertComment" parameterType="COMMENTDTO">
+		INSERT INTO MYREPLY (
+		RNO,
+		BOARD_SEQ,
+		CONTENT,
+		WRITER,
+		PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(MYREPLY.RNO),0)+1 FROM MYREPLY),
+		#{board_seq},
+		#{content},
+		#{writer},
+		#{pw}
+		)
+	</insert>
+	 <insert id="insertCommentSR" parameterType="COMMENTDTO">
+		INSERT INTO SRMYREPLY (
+		RNO,
+		BOARD_SEQ,
+		CONTENT,
+		WRITER,
+		PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(SRMYREPLY.RNO),0)+1 FROM SRMYREPLY),
+		#{board_seq},
+		#{content},
+		#{writer},
+		#{pw}
+		)
+	</insert>
+	<insert id="insertCommentQT" parameterType="COMMENTDTO">
+		INSERT INTO QTMYREPLY (
+		RNO,
+		BOARD_SEQ,
+		CONTENT,
+		WRITER,
+		PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(QTMYREPLY.RNO),0)+1 FROM QTMYREPLY),
+		#{board_seq},
+		#{content},
+		#{writer},
+		#{pw}
+		)
+	</insert>
+	<insert id="insertCommentM" parameterType="COMMENTDTO">
+		INSERT INTO MMYREPLY (
+		RNO,
+		BOARD_SEQ,
+		CONTENT,
+		WRITER,
+		PW
+		) VALUES (
+		(SELECT
+		NVL(MAX(MMYREPLY.RNO),0)+1 FROM MMYREPLY),
+		#{board_seq},
+		#{content},
+		#{writer},
+		#{pw}
+		)
+	</insert>
+	
+	
+	
+	
+	<select id="CommentModifyTry" parameterType="COMMENTDTO"
+		resultType="COMMENTDTO">
+		SELECT
+		RNO AS rno
+		FROM MYREPLY
+		WHERE
+		RNO =
+		#{rno}
+	</select>
+	<select id="CommentModifyTrySR" parameterType="COMMENTDTO"
+		resultType="COMMENTDTO">
+		SELECT
+		RNO AS rno
+		FROM SRMYREPLY
+		WHERE
+		RNO =
+		#{rno}
+	</select>
+	<select id="CommentModifyTryQT" parameterType="COMMENTDTO"
+		resultType="COMMENTDTO">
+		SELECT
+		RNO AS rno
+		FROM QTMYREPLY
+		WHERE
+		RNO =
+		#{rno}
+	</select>
+	<select id="CommentModifyTryM" parameterType="COMMENTDTO"
+		resultType="COMMENTDTO">
+		SELECT
+		RNO AS rno
+		FROM MMYREPLY
+		WHERE
+		RNO =
+		#{rno}
+	</select>
+	
+	
+	
+	
+	
+	<select id="CommentCertify" parameterType="COMMENTDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM MYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	<select id="CommentCertifySR" parameterType="COMMENTDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM SRMYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	<select id="CommentCertifyQT" parameterType="COMMENTDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM QTMYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	<select id="CommentCertifyM" parameterType="COMMENTDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM MMYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	
+	
+	
+	
+	<select id="CommentCertify2" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			RNO AS rno,
+			CONTENT AS content,
+			WRITER AS writer,
+			PW AS pw
+		FROM MYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	<select id="CommentCertify2SR" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			RNO AS rno,
+			CONTENT AS content,
+			WRITER AS writer,
+			PW AS pw
+		FROM SRMYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	<select id="CommentCertify2QT" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			RNO AS rno,
+			CONTENT AS content,
+			WRITER AS writer,
+			PW AS pw
+		FROM QTMYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	<select id="CommentCertify2M" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			RNO AS rno,
+			CONTENT AS content,
+			WRITER AS writer,
+			PW AS pw
+		FROM MMYREPLY
+		WHERE
+			RNO = #{rno}
+		AND PW = #{pw}
+	</select>
+	
+	
+	
+	<update id="CommentUpdate" parameterType="COMMENTDTO">
+		UPDATE MYREPLY SET
+		CONTENT = #{content},
+		PW = #{pw},
+		WRITER = #{writer}
+		WHERE
+		RNO = #{rno}
+	</update>
+	<update id="CommentUpdateSR" parameterType="COMMENTDTO">
+		UPDATE SRMYREPLY SET
+		CONTENT = #{content},
+		PW = #{pw},
+		WRITER = #{writer}
+		WHERE
+		RNO = #{rno}
+	</update>
+	<update id="CommentUpdateQT" parameterType="COMMENTDTO">
+		UPDATE QTMYREPLY SET
+		CONTENT = #{content},
+		PW = #{pw},
+		WRITER = #{writer}
+		WHERE
+		RNO = #{rno}
+	</update>
+	<update id="CommentUpdateM" parameterType="COMMENTDTO">
+		UPDATE MMYREPLY SET
+		CONTENT = #{content},
+		PW = #{pw},
+		WRITER = #{writer}
+		WHERE
+		RNO = #{rno}
+	</update>
+	
+	
+	
+	
+	<delete id="CommentDelete" parameterType="COMMENTDTO">
+		DELETE
+		FROM
+		MYREPLY
+		WHERE
+		RNO = #{rno}
+	</delete>
+	<delete id="CommentDeleteSR" parameterType="COMMENTDTO">
+		DELETE
+		FROM
+		SRMYREPLY
+		WHERE
+		RNO = #{rno}
+	</delete>
+	<delete id="CommentDeleteQT" parameterType="COMMENTDTO">
+		DELETE
+		FROM
+		QTMYREPLY
+		WHERE
+		RNO = #{rno}
+	</delete>
+	<delete id="CommentDeleteM" parameterType="COMMENTDTO">
+		DELETE
+		FROM
+		MMYREPLY
+		WHERE
+		RNO = #{rno}
+	</delete>
+	
+	
+	
+	
+	<select id="selectRe" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			CONTENT AS content,
+			WRITER AS writer
+		FROM MYREPLY
+		WHERE
+			RNO = #{rno}
+	</select>
+	<select id="selectReSR" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			CONTENT AS content,
+			WRITER AS writer
+		FROM SRMYREPLY
+		WHERE
+			RNO = #{rno}
+	</select>
+	<select id="selectReQT" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			CONTENT AS content,
+			WRITER AS writer
+		FROM QTMYREPLY
+		WHERE
+			RNO = #{rno}
+	</select>
+	<select id="selectReM" parameterType="COMMENTDTO" resultType="COMMENTDTO">
+		SELECT
+			BOARD_SEQ AS board_seq,
+			CONTENT AS content,
+			WRITER AS writer
+		FROM MMYREPLY
+		WHERE
+			RNO = #{rno}
+	</select>
+</mapper>
+
+
